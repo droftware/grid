@@ -34,6 +34,19 @@ public:
     iterator row_end(size_t row);
     const_iterator row_end(size_t row) const;
 
+    class MutableReference
+    {
+    public:
+        friend class grid;
+        T& operator[] (size_t col);
+
+    private:
+        MutableReference(grid* owner,size_t row);
+        grid* const owner;
+        const size_t row;
+    };
+    MutableReference operator[](size_t row);
+
 private:
     std::vector<T> elems;
     size_t rows;
@@ -97,7 +110,6 @@ template<typename T> typename grid<T>::const_iterator grid<T>::end() const{
     return elems.end();
 }
 
-
 template<typename T> typename grid<T>::iterator grid<T>::row_begin(size_t row){
     return begin() + row * numCols();
 }
@@ -114,7 +126,16 @@ template<typename T> typename grid<T>::const_iterator grid<T>::row_end(size_t ro
     return row_begin(row) + numCols();
 }
 
+template<typename T> grid<T>::MutableReference::MutableReference(grid* owner,size_t row)
+    :owner(owner),row(row){
+}
 
+template<typename T> T& grid<T>::MutableReference::operator[](size_t col){
+    owner->getAt(row,col);
+}
 
+template<typename T> typename grid<T>::MutableReference grid<T>::operator[](size_t row){
+    return MutableReference(this,row);
+}
 
 #endif
