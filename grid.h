@@ -47,6 +47,19 @@ public:
     };
     MutableReference operator[](size_t row);
 
+    class ImmutableReference
+    {
+    public:
+        friend class grid;
+        const T& operator[](size_t col) const;
+
+    private:
+        ImmutableReference(const grid* owner,size_t row);
+        const grid* const owner;
+        const size_t row;
+    };
+    ImmutableReference operator[](size_t row) const;
+
 private:
     std::vector<T> elems;
     size_t rows;
@@ -125,17 +138,30 @@ template<typename T> typename grid<T>::iterator grid<T>::row_end(size_t row){
 template<typename T> typename grid<T>::const_iterator grid<T>::row_end(size_t row) const{
     return row_begin(row) + numCols();
 }
+/*--------------*/
 
 template<typename T> grid<T>::MutableReference::MutableReference(grid* owner,size_t row)
     :owner(owner),row(row){
 }
 
 template<typename T> T& grid<T>::MutableReference::operator[](size_t col){
-    owner->getAt(row,col);
+    return owner->getAt(row,col);
 }
 
 template<typename T> typename grid<T>::MutableReference grid<T>::operator[](size_t row){
     return MutableReference(this,row);
 }
+/*--------------*/
 
+template<typename T> grid<T>::ImmutableReference::ImmutableReference(const grid* owner,size_t row)
+    :owner(owner),row(row){
+}
+
+template<typename T> const T& grid<T>::ImmutableReference::operator[](size_t col) const{
+    return owner -> getAt(row,col);
+}
+
+template<typename T> typename grid<T>::ImmutableReference grid<T>::operator[](size_t row) const{
+    return ImmutableReference(this,row);
+}
 #endif

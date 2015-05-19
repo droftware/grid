@@ -25,4 +25,10 @@ main()
     cout<<"Value at 4 , 3 is = "<<myGrid[4][3]<<endl;
     myGrid[4][3]=105;
     cout<<"Value at 4 , 3 is = "<<myGrid[4][3]<<endl;
+
+    cout<<"Checking const version"<<endl;
+    const grid<int> cg(10,10);
+    //cg[5][7] = 45;
+    cout<<"Value of cg at 5,7 is = "<<cg[5][7]<<endl;
+
 }
