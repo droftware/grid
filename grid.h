@@ -2,6 +2,7 @@
 #define grid_h
 
 #include <vector>
+#include <algorithm>
 
 template<typename T>
 class grid
@@ -59,6 +60,13 @@ public:
         const size_t row;
     };
     ImmutableReference operator[](size_t row) const;
+
+    bool operator < (const grid& other) const;
+    bool operator > (const grid& other) const;
+    bool operator == (const grid& other) const;
+    bool operator != (const grid& other) const;
+    bool operator <= (const grid& other) const;
+    bool operator >= (const grid& other) const;
 
 private:
     std::vector<T> elems;
@@ -164,4 +172,35 @@ template<typename T> const T& grid<T>::ImmutableReference::operator[](size_t col
 template<typename T> typename grid<T>::ImmutableReference grid<T>::operator[](size_t row) const{
     return ImmutableReference(this,row);
 }
+
+template<typename T> bool grid<T>::operator < (const grid& other) const{
+    if(numRows() != other.numRows())
+        return numRows() < other.numRows();
+
+    if(numCols() != other.numCols())
+        return numCols() < other.numCols();
+
+    return lexicographical_compare(begin(),end(),other.begin(),other.end());
+}
+
+template<typename T> bool grid<T>::operator >= (const grid& other) const{
+    return !(*this < other);
+}
+
+template<typename T> bool grid<T>::operator > (const grid& other) const{
+    return other < *this;
+}
+
+template<typename T> bool grid<T>::operator <= (const grid& other) const{
+    return !(*this > other);
+}
+
+template<typename T> bool grid<T>::operator == (const grid& other) const{
+    return (!(*this < other) && !(other < *this));
+}
+
+template<typename T> bool grid<T>::operator != (const grid& other) const{
+    return (*this < other) || (other < *this);
+}
+
 #endif

@@ -31,4 +31,19 @@ main()
     //cg[5][7] = 45;
     cout<<"Value of cg at 5,7 is = "<<cg[5][7]<<endl;
 
+    cout<<"Testing relational operators "<<endl;
+    cout<<(cg < myGrid)<<endl;
+
+    grid<char> a(7,8);
+    grid<char> b(9,6);
+    
+    cout<<boolalpha;
+    cout<<" a operator b"<<endl;
+    cout<<" b is greater than a"<<endl;
+    cout<<"<"<<(a<b)<<endl;
+    cout<<">"<<(a>b)<<endl;
+    cout<<"=="<<(a==b)<<endl;
+    cout<<"<="<<(a<=b)<<endl;
+    cout<<">="<<(a>=b)<<endl;
+    cout<<"!="<<(a!=b)<<endl;
 }
